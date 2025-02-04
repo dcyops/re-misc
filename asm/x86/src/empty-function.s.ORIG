@@ -1,0 +1,36 @@
+	.file	"empty-function.c" # (Directive) Filename used for debugging purposes.
+	.intel_syntax noprefix 	   # (Directive) Specifies the syntax to be used.
+	.text					   # (Directive) Indicates the start of the code section.
+	.globl	main			   # (Directive) Declares local symbols, like functions, to the linker.
+	.type	main, @function    # (Directive) Specifies the type of a symbol, like a function or object.
+main:
+.LFB0: 	# <---------------------------  (Label) Label Function Begin. These mark the beginning of a function's code. In this case we are making the beginning of the main() function.
+	.cfi_startproc						# These labels useful for debugging purposes as they tell the debugger where a function begins/ends.
+	push	ebp							# These have no affect on the exectuion of the program itself. Imagine comments in source code.
+	.cfi_def_cfa_offset 8 # (Directive) Call Frame Information. These provide information to the debugger about the state of the stack.
+	.cfi_offset 5, -8	  # (Directive)
+	mov	ebp, esp
+	.cfi_def_cfa_register 5
+	call	__x86.get_pc_thunk.ax
+	add	eax, OFFSET FLAT:_GLOBAL_OFFSET_TABLE_
+	nop
+	pop	ebp
+	.cfi_restore 5
+	.cfi_def_cfa 4, 4
+	ret
+	.cfi_endproc
+.LFE0:	# Label Function End. These mark the end of the function's code.
+	.size	main, .-main
+	.section	.text.__x86.get_pc_thunk.ax,"axG",@progbits,__x86.get_pc_thunk.ax,comdat
+	.globl	__x86.get_pc_thunk.ax
+	.hidden	__x86.get_pc_thunk.ax
+	.type	__x86.get_pc_thunk.ax, @function
+__x86.get_pc_thunk.ax:
+.LFB1:
+	.cfi_startproc
+	mov	eax, DWORD PTR [esp]
+	ret
+	.cfi_endproc
+.LFE1:
+	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
+	.section	.note.GNU-stack,"",@progbits
